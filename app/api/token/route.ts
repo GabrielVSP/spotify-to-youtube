@@ -14,11 +14,11 @@ export async function GET(req: Request) {
 
         if(!authHeader || authHeader !== tokenKey) return new NextResponse("Chave de autorização inválida.", { status: 401 })
 
-        const tokenEnt = await prismadb.token.findFirst()
+        const tokenEnt = await prismadb.token.findFirst({
+            where: {id: 1}
+        })
 
-        if(tokenEnt) {
-
-            let response
+        let response
 
             try {
 
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
                     'https://accounts.spotify.com/api/token',
                     new URLSearchParams({
                         'grant_type': "client_credentials",
-                        'client_id': 'clientId',
+                        'client_id': clientId,
                         'client_secret': clientSecret,
                     }).toString(),
                     {
@@ -34,19 +34,34 @@ export async function GET(req: Request) {
                     }
                 )
 
-            } catch {
-                return new NextResponse("Erro interno", { status: 500})
+            } catch (e: any){
+                return new NextResponse("Erro interno.", { status: 500})
             }
 
-            return NextResponse.json(response.data)
+        if(tokenEnt) {
+
+            await prismadb.token.update({
+                where: { id: 1 },
+                data: {
+                    value: response.data["access_token"]
+                }
+            })
 
             return NextResponse.json("Token atualizado com sucesso.")
 
         }
 
-    } catch {
+        await prismadb.token.create({
+            data: {
+                value: response.data["access_token"]
+            }
+        })
 
-        return new NextResponse("Erro interno", { status: 500})
+        return NextResponse.json("Token atualizado com sucesso.")
+
+    } catch(e: any) {
+
+        return new NextResponse("Erro interno"+ e, { status: 500})
 
     }
 

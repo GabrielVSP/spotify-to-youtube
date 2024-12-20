@@ -8,23 +8,41 @@ export async function GET ( req: Request, { params }: { params: { albumId: strin
  
     try {
 
-        const token = await prismadb.token.findFirst()
+        if(!params.albumId) return new NextResponse("ID inválido.", { status: 400 })
+
+        const token = await prismadb.token.findFirst({
+            where: { id: 1 }
+        })
 
         if(!token) {
 
-            const res = axios.get('localhost:3000/api/token', {
+            await axios.get('http://localhost:3000/api/token', {
                 headers: {
                     "Authorization": tokenKey
                 }
             })
 
-            return NextResponse.json(res)
+            return new NextResponse("Por favor tente novamente", { status: 500})
 
         }
 
-    } catch {
+        let res
 
-        return new NextResponse("Erro interno", { status: 500})
+        try {
+            res = await axios.get(`https://api.spotify.com/v1/albums/${params.albumId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token.value}`
+                }
+            })
+        } catch(e: any) {
+            return new NextResponse("Erro na requisição da API, verifique o ID e tente novamente", { status: e.status})
+        }
+
+        return NextResponse.json(res.data)
+
+    } catch(e: any) {
+
+        return new NextResponse(e, { status: 500})
 
     }
 
