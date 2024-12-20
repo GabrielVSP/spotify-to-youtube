@@ -38,9 +38,7 @@ export async function GET ( req: Request, { params }: { params: { albumId: strin
                 }
             })
 
-
             const trackNames: string[] = []
-            const artist: string = ''
 
             const json = res.data.tracks.items.map((track: Track) => {
 
