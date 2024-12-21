@@ -12,8 +12,7 @@ export default function Home() {
 
     const albumData = await axios.get("http://localhost:3000/api/album/5RKDlGGlfI4ylZDmJpzGlv")
     const playlist = await axios.post("http://localhost:3000/api/playlist")
-
-    setData(playlist)
+    const videosid = await axios.get("http://localhost:3000/api/video", { data: albumData })
 
 
   }

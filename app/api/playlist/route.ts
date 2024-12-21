@@ -1,21 +1,31 @@
+import { oauth2Client } from "@/lib/oauth2";
+import prismadb from "@/lib/prismadb";
 import axios from "axios";
-import { randomUUID } from "crypto";
+import { v4 } from "uuid";
 import { NextResponse } from "next/server";
 
-const yt_key = process.env.YT_TOKEN
-
-export async function POST( req: Request) {
+export async function POST() {
 
     try {
 
+        const token = await prismadb.token.findFirst({
+            where: { id: 1 },
+        })
+
+        await oauth2Client.setCredentials({
+            refresh_token: token?.refreshToken,
+        })
+
+        const newAcc = (await oauth2Client.getAccessToken()).token
+
         const playlist = await axios.post("https://www.googleapis.com/youtube/v3/playlists?part=id,snippet", {
             "snippet": {
-                "title": randomUUID,
+                "title": v4(),
                 "description": "..."
             }
         },
         {
-            headers: { "Authorization": `Bearer ${yt_key}`}
+            headers: { "Authorization": `Bearer ${newAcc}`}
         })
 
         return NextResponse.json(playlist.data)
