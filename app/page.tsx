@@ -11,9 +11,14 @@ export default function Home() {
   const get = async () => {
 
     const albumData = await axios.get("http://localhost:3000/api/album/5RKDlGGlfI4ylZDmJpzGlv")
-    const playlist = await axios.post("http://localhost:3000/api/playlist")
-    const videosid = await axios.get("http://localhost:3000/api/video", { data: albumData })
+    // const playlist = await axios.post("http://localhost:3000/api/playlist")
 
+    const jsonString = JSON.stringify(albumData)
+    const base64 = Buffer.from(jsonString).toString('base64')
+
+    const videosid = await axios.get("http://localhost:3000/api/video?data="+base64)
+
+    setData(videosid)
 
   }
 
