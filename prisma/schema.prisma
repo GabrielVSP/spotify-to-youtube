@@ -16,6 +16,8 @@ datasource db {
 model Token {
   id Int @id @default(autoincrement())
   value String
+  refreshToken String
+  accessToken String
   created_At DateTime @default(now())
   updated_At DateTime @updatedAt
 }

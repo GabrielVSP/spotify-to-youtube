@@ -1,17 +1,11 @@
 import prismadb from "@/lib/prismadb"
 import axios from "axios"
 import { NextResponse } from "next/server"
-import { google } from "googleapis"
+import { authUrl, oauth2Client } from "@/lib/oauth2"
 
 const tokenKey = process.env.TOKEN_KEY
 const clientId: string =  process.env.CLIENT_ID || ''
 const clientSecret: string =  process.env.CLIENT_SECRET || ''
-
-let oauth2Client = new google.auth.OAuth2(
-    '813928477968-85ele61u44hn3ufcgl4d99m9rd0lfl7i.apps.googleusercontent.com',
-    '813928477968-85ele61u44hn3ufcgl4d99m9rd0lfl7i.apps.googleusercontent.com',
-    'http://localhost:3000/api/callback'
-);
 
 export async function GET(req: Request) {
     
@@ -60,7 +54,9 @@ export async function GET(req: Request) {
 
         await prismadb.token.create({
             data: {
-                value: response.data["access_token"]
+                value: response.data["access_token"],
+                accessToken: '',
+                refreshToken: ''
             }
         })
 
@@ -78,29 +74,7 @@ export async function POST() {
     
     try {
           
-          const url = oauth2Client.generateAuthUrl({
-            // 'online' (default) or 'offline' (gets refresh_token)
-            access_type: 'offline',
-          
-            // If you only need one scope, you can pass it as a string
-            scope: 'https://www.googleapis.com/auth/youtube'
-          });
-
-        // const response = await axios.post(
-        //     "https://accounts.google.com/o/oauth2/v2/auth",
-        //     new URLSearchParams({
-        //       grant_type: 'Authorization Code', 
-        //       callback_url: 'http://localhost',
-        //       auth_url: 'https://accounts.google.com/o/oauth2/v2/auth',
-        //       access_token_url: 'https://oauth2.googleapis.com/token',
-        //       client_id: '813928477968-85ele61u44hn3ufcgl4d99m9rd0lfl7i.apps.googleusercontent.com',
-        //       client_secret: '813928477968-85ele61u44hn3ufcgl4d99m9rd0lfl7i.apps.googleusercontent.com',
-        //       scope: 'https://www.googleapis.com/auth/youtube'
-        //     }),        
-        //   );
-
-        return NextResponse.json(url)
-        // return NextResponse.json(response.data)
+        return NextResponse.json(authUrl)
 
     } catch(e: any) {
 
@@ -110,4 +84,3 @@ export async function POST() {
 
 }
 
-export default oauth2Client
