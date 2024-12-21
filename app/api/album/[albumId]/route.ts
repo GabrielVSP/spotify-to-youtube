@@ -40,7 +40,7 @@ export async function GET ( req: Request, { params }: { params: { albumId: strin
 
             const trackNames: string[] = []
 
-            const json = res.data.tracks.items.map((track: Track) => {
+            res.data.tracks.items.map((track: Track) => {
 
                 trackNames.push(track.name)
 
@@ -53,6 +53,11 @@ export async function GET ( req: Request, { params }: { params: { albumId: strin
             })
 
         } catch(e: any) {
+            await axios.get('http://localhost:3000/api/token', {
+                headers: {
+                    "Authorization": tokenKey
+                }
+            })
             return new NextResponse("Erro na requisição da API, verifique o ID e tente novamente", { status: e.status})
         }
 

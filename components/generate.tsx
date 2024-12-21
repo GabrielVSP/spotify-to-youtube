@@ -12,7 +12,12 @@ export default function Generate({gen, data}: GenerateProps) {
                 gera
             </button>
 
-            {data}
+            {
+                data && (
+                    console.log(data)
+                )
+            }
+
         </div>
 
     )
