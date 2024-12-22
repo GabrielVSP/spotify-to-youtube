@@ -1,8 +1,9 @@
 "use client"
 
-import { faBridge } from "@fortawesome/free-solid-svg-icons";
+import { faBridge, faHourglass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import clsx from "clsx";
 import { Roboto } from "next/font/google";
 import { useState } from "react";
 
@@ -10,23 +11,61 @@ const roboto = Roboto({ subsets: ['latin'], weight: '400' })
 
 export default function Home() {
 
-  const [data, setData] = useState<{}>()
+  const [data, setData] = useState<{'color': string, 'text': string}>({color: '', text: ''})
+  const [info, setInfo] = useState<any>()
+  const [input, setInput] = useState<string>()
 
-  const get = async () => {
+  const get = async (e: any) => {
 
-    // const albumData = await axios.get("http://localhost:3000/api/album/5RKDlGGlfI4ylZDmJpzGlv")
-    // // const playlist = await axios.post("http://localhost:3000/api/playlist")
+    e.preventDefault()
 
-    // const jsonString = JSON.stringify(albumData)
-    // const base64 = Buffer.from(jsonString).toString('base64')
+    try {
 
-    // const videosid = await axios.get("http://localhost:3000/api/video?data="+base64)
-    // const videosInsert = await axios.post("http://localhost:3000/api/video", {
-    //   playlistId: 'PLjy5IMbY0Q7-Gzy5akZ3qGs-Zwqwven7z',
-    //   songsId: videosid
-    // })
+      const url = input?.split('/').pop()
 
-    // setData(videosInsert)
+      await setData({
+        color: 'yellow-500',
+        text: 'Adquirindo informações do álbum...'
+      })
+
+      const albumData = await axios.get(`http://localhost:3000/api/album/${url}`)
+
+      await setData({
+        color: 'yellow-500',
+        text: 'Criando playlist...'
+      })
+
+      const playlist: { data: {id: string}} = await axios.post("http://localhost:3000/api/playlist")
+
+      await setData({
+        color: 'yellow-500',
+        text: 'Adquirindo informações dos vídeos'
+      })
+
+      const jsonString = JSON.stringify(albumData)
+      const base64 = Buffer.from(jsonString).toString('base64')
+      const videosid = await axios.get("http://localhost:3000/api/video?data="+base64)
+
+      const videosInsert: string = await axios.post("http://localhost:3000/api/video", {
+        playlistId: playlist.data.id,
+        songsId: videosid
+      })
+
+      setInfo(videosInsert)
+
+      setData({
+        color: 'green-500',
+        text: "Aqui está a sua playlist: " + videosInsert
+      })
+
+    } catch {
+
+      setData({
+        color: 'red-500',
+        text: 'Parece que algo deu errado. Por favor tente novamente.'
+      })
+
+    }
 
   }
 
@@ -52,12 +91,12 @@ export default function Home() {
 
         <h2 className="text-indigo-200 text-xl mb-3">Para converter o álbum basta inserir o link dele logo abaixo.</h2>
 
-        <form className="w-full flex items-center justify-center">
-          <input type="text" className="p-2 rounded-xl bg-white w-1/3 border hover:border-indigo-800 focus:border-indigo-500 hover:border-5 duration-500" />
+        <form className="w-full flex items-center justify-center" onSubmit={get}>
+          <input type="text" className="p-2 rounded-xl bg-white w-1/3 border hover:border-indigo-800 focus:border-indigo-500 hover:border-5 duration-500" onChange={(e) => setInput(e.target.value)} />
         </form>
 
-        <div className="text-lg">
-          <p className="text-">Algo deu errado :(</p>
+        <div className="text-lg mt-2">
+          <p className={clsx(`text-${data.color}`)}>{data.text} { data.color === "yellow-500" && (<FontAwesomeIcon icon={faHourglass} className="text-yellow-500 animate-spin" />)}</p>
         </div>
 
       </section>
