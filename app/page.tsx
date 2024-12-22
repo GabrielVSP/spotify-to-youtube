@@ -30,6 +30,10 @@ export default function Home() {
 
     <main>
 
+      <header className="p-2 py-5 bg-slate-900">
+        <h1 className="text-3xl text-green-500 p-1">Album Bridge</h1>
+      </header>
+
       <Generate gen={get} data={data} />
 
     </main>

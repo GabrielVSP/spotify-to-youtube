@@ -79,7 +79,9 @@ export async function POST( req: Request) {
 
         const newAcc = (await oauth2Client.getAccessToken()).token
 
-        for( const id of songsId ) {
+        return NextResponse.json(newAcc)
+
+        for( const id of songsId.data ) {
 
             await axios.post("https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,id,snippet,status", {
                     snippet: {
