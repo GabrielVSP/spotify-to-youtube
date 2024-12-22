@@ -8,11 +8,13 @@ interface Track {
     name: string
 }
 
-export async function GET ( req: Request, { params }: { params: { albumId: string}}) {
+export async function GET ( req: Request, { params }: { params: Promise<{ albumId: string}> }) {
  
     try {
 
-        if(!params.albumId) return new NextResponse("ID inválido.", { status: 400 })
+        const {albumId} = await params
+
+        if(!albumId) return new NextResponse("ID inválido.", { status: 400 })
 
         const token = await prismadb.token.findFirst({
             where: { id: 1 }
@@ -32,7 +34,7 @@ export async function GET ( req: Request, { params }: { params: { albumId: strin
 
         try {
 
-            const res = await axios.get(`https://api.spotify.com/v1/albums/${params.albumId}`, {
+            const res = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, {
                 headers: {
                     'Authorization': `Bearer ${token.value}`
                 }
