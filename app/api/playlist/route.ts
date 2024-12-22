@@ -18,10 +18,13 @@ export async function POST() {
 
         const newAcc = (await oauth2Client.getAccessToken()).token
 
-        const playlist = await axios.post("https://www.googleapis.com/youtube/v3/playlists?part=id,snippet", {
+        const playlist = await axios.post("https://www.googleapis.com/youtube/v3/playlists?part=id,snippet,status", {
             "snippet": {
                 "title": v4(),
-                "description": "..."
+                "description": "...",
+            },
+            "status": {
+                "privacyStatus": "public"
             }
         },
         {
