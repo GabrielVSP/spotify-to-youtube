@@ -62,9 +62,9 @@ export async function GET(req: Request) {
 
         return NextResponse.json("Token atualizado com sucesso.")
 
-    } catch(e: any) {
+    } catch {
 
-        return new NextResponse("Erro interno"+ e, { status: 500})
+        return new NextResponse("Erro interno", { status: 500})
 
     }
 
