@@ -33,9 +33,9 @@ export async function POST() {
 
         return NextResponse.json(playlist.data)
 
-    } catch(e: any) {
+    } catch {
 
-        return new NextResponse(e, { status: 500 })
+        return new NextResponse('Erro interno.', { status: 500 })
 
     }
     

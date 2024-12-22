@@ -100,9 +100,9 @@ export async function POST( req: Request) {
             playlistUrl: `https://www.youtube.com/playlist?list=${playlistId}`
         })
 
-    } catch (e: any) {
+    } catch {
 
-        return new NextResponse(e, { status: 500})
+        return new NextResponse('Erro interno', { status: 500})
 
     }
 

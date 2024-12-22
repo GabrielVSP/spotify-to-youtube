@@ -63,9 +63,9 @@ export async function GET ( req: Request, { params }: { params: { albumId: strin
 
        
 
-    } catch(e: any) {
+    } catch {
 
-        return new NextResponse(e, { status: 500})
+        return new NextResponse('Erro interno.', { status: 500})
 
     }
 

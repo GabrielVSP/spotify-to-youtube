@@ -23,8 +23,8 @@ export async function GET( req: Request ) {
 
         return NextResponse.json(tokens)
 
-    } catch(e: any) {
-        return new NextResponse(e, { status: 500})
+    } catch {
+        return new NextResponse('Erro interno.', { status: 500})
     }
 
 }

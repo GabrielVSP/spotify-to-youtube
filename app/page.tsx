@@ -46,7 +46,7 @@ export default function Home() {
       const base64 = Buffer.from(jsonString).toString('base64')
       const videosid = await axios.get("http://localhost:3000/api/video?data="+base64)
 
-      const videosInsert: string = await axios.post("http://localhost:3000/api/video", {
+      const videosInsert: { playlistUrl: string } = await axios.post("http://localhost:3000/api/video", {
         playlistId: playlist.data.id,
         songsId: videosid
       })
@@ -55,7 +55,7 @@ export default function Home() {
 
       setData({
         color: 'green-500',
-        text: "Aqui está a sua playlist: " + videosInsert
+        text: "Aqui está a sua playlist: " + videosInsert.playlistUrl
       })
 
     } catch {
@@ -96,12 +96,10 @@ export default function Home() {
         </form>
 
         <div className="text-lg mt-2">
-          <p className={clsx(`text-${data.color}`)}>{data.text} { data.color === "yellow-500" && (<FontAwesomeIcon icon={faHourglass} className="text-yellow-500 animate-spin" />)}</p>
+          <p className={clsx(`text-${data.color}`)}>{data.text} { data.color === "yellow-500" && (<FontAwesomeIcon icon={faHourglass} className="text-yellow-500 animate-spin px-1" />)}</p>
         </div>
 
       </section>
-
-      
 
     </main>
     
