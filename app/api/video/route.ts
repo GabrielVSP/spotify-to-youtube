@@ -1,3 +1,5 @@
+import { oauth2Client } from "@/lib/oauth2";
+import prismadb from "@/lib/prismadb";
 import axios from "axios";
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
@@ -37,7 +39,9 @@ export async function GET( req: Request ) {
 
           if(!videoUrl) return new NextResponse("Nenhum vídeo encontrado")
            
-          ids.push(videoUrl)
+            const videoQuery = new URL(videoUrl)
+
+          ids.push(videoQuery.searchParams.get('v'))
 
           page.close()
 
@@ -47,7 +51,56 @@ export async function GET( req: Request ) {
 
         return NextResponse.json(ids)
 
-    } catch(e: any) {
+    } catch {
+
+        return new NextResponse('Erro interno.', { status: 500})
+
+    }
+
+}
+
+export async function POST( req: Request) {
+    
+    try {
+
+        const body = await req.json()
+        const {playlistId, songsId} = body
+
+        if(!playlistId) return new NextResponse("ID de playlist inválido.", { status: 400 })
+        if(!songsId) return new NextResponse("Os IDs das músicas não respeitam o formato esperado.", { status: 400 })
+
+        const token = await prismadb.token.findFirst({
+            where: { id: 1 },
+        })
+
+        await oauth2Client.setCredentials({
+            refresh_token: token?.refreshToken,
+        })
+
+        const newAcc = (await oauth2Client.getAccessToken()).token
+
+        for( const id of songsId ) {
+
+            await axios.post("https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails,id,snippet,status", {
+                    snippet: {
+                        playlistId,
+                        resourceId: {
+                            kind: "youtube#video",
+                            videoId: id
+                        }
+                    }
+            },
+            {
+                headers: { "Authorization": `Bearer ${newAcc}` }
+            })
+
+        }
+        
+        return NextResponse.json({
+            playlistUrl: `https://www.youtube.com/playlist?list=${playlistId}`
+        })
+
+    } catch (e: any) {
 
         return new NextResponse(e, { status: 500})
 

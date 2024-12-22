@@ -17,8 +17,12 @@ export default function Home() {
     const base64 = Buffer.from(jsonString).toString('base64')
 
     const videosid = await axios.get("http://localhost:3000/api/video?data="+base64)
+    const videosInsert = await axios.post("http://localhost:3000/api/video", {
+      playlistId: 'PLjy5IMbY0Q7-Gzy5akZ3qGs-Zwqwven7z',
+      songsId: videosid
+    })
 
-    setData(videosid)
+    setData(videosInsert)
 
   }
 
