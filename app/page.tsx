@@ -47,7 +47,7 @@ export default function Home() {
 
       const videosid = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/video?data=${base64}`)
 
-      const videosInsert: { playlistUrl: string } = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/video`, {
+      const videosInsert: { data: { playlistUrl: string } } = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/video`, {
         playlistId: playlist.data.id,
         songsId: videosid
       })
@@ -56,7 +56,7 @@ export default function Home() {
 
       setData({
         color: 'green-500',
-        text: "Aqui está a sua playlist: " + videosInsert.playlistUrl
+        text: "Aqui está a sua playlist: " + videosInsert.data.playlistUrl
       })
 
     } catch {
