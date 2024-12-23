@@ -39,9 +39,9 @@ export async function POST() {
 
         return NextResponse.json(req.data)
 
-    } catch {
+    } catch(e: any) {
 
-        return new NextResponse("Erro interno", { status: 500 })
+        return new NextResponse(e, { status: 500 })
 
     }
     
