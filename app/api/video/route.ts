@@ -53,7 +53,7 @@ export async function GET( req: Request ) {
 
     } catch(e: any) {
 
-        return new NextResponse(e, { status: 500})
+        return new NextResponse("PUPPETER => "+e, { status: 500})
 
     }
 
