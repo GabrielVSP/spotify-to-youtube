@@ -16,6 +16,7 @@
     "@next/font": "^14.2.15",
     "@prisma/client": "^6.1.0",
     "axios": "^1.7.9",
+    "bottleneck": "^2.19.5",
     "clsx": "^2.1.1",
     "googleapis": "^144.0.0",
     "next": "15.1.2",

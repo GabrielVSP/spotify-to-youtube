@@ -37,31 +37,27 @@ export default function Home() {
 
       const playlist: { data: {id: string}} = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/playlist`)
 
-      setInfo(playlist)
+      await setData({
+        color: 'yellow-500',
+        text: 'Adquirindo informações dos vídeos'
+      })
 
-      return
+      const jsonString = await JSON.stringify(albumData)
+      const base64 = await Buffer.from(jsonString).toString('base64')
 
-      // await setData({
-      //   color: 'yellow-500',
-      //   text: 'Adquirindo informações dos vídeos'
-      // })
+      const videosid = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/video?data=${base64}`)
 
-      // const jsonString = await JSON.stringify(albumData)
-      // const base64 = await Buffer.from(jsonString).toString('base64')
+      const videosInsert: { data: { playlistUrl: string } } = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/video`, {
+        playlistId: playlist.data.id,
+        songsId: videosid
+      })
 
-      // const videosid = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/video?data=${base64}`)
+      setInfo(videosInsert)
 
-      // const videosInsert: { data: { playlistUrl: string } } = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/video`, {
-      //   playlistId: playlist.data.id,
-      //   songsId: videosid
-      // })
-
-      // setInfo(videosInsert)
-
-      // setData({
-      //   color: 'green-500',
-      //   text: "Aqui está a sua playlist: " + videosInsert.data.playlistUrl
-      // })
+      setData({
+        color: 'green-500',
+        text: "Aqui está a sua playlist: " + videosInsert.data.playlistUrl
+      })
 
     } catch {
 
@@ -105,8 +101,6 @@ export default function Home() {
         </div>
 
       </section>
-
-      {info && console.log(info)}
 
     </main>
     

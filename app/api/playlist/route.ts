@@ -1,8 +1,14 @@
 import { oauth2Client } from "@/lib/oauth2";
+import Bottleneck from "bottleneck"
 import prismadb from "@/lib/prismadb";
 import axios from "axios";
 import { v4 } from "uuid";
 import { NextResponse } from "next/server";
+
+const limiter = new Bottleneck({
+    maxConcurrent: 1, // Apenas uma requisição ao mesmo tempo
+    minTime: 1000, // Pelo menos 1 segundo entre requisições
+});
 
 export async function POST() {
 
@@ -18,9 +24,7 @@ export async function POST() {
 
         const newAcc = (await oauth2Client.getAccessToken()).token
 
-        return NextResponse.json(newAcc)
-
-        const playlist = await axios.post("https://www.googleapis.com/youtube/v3/playlists?part=id,snippet,status", {
+        const req: any = await limiter.schedule(async () => await axios.post("https://www.googleapis.com/youtube/v3/playlists?part=id,snippet,status", {
             "snippet": {
                 "title": v4(),
                 "description": "...",
@@ -31,13 +35,13 @@ export async function POST() {
         },
         {
             headers: { "Authorization": `Bearer ${newAcc}`}
-        })
+        }))
 
-        return NextResponse.json(playlist.data)
+        return NextResponse.json(req)
 
-    } catch(e: any) {
+    } catch {
 
-        return new NextResponse(e, { status: 500 })
+        return new NextResponse('Erro interno', { status: 500 })
 
     }
     
