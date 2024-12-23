@@ -37,6 +37,8 @@ export default function Home() {
 
       const playlist: { data: {id: string}} = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/playlist`)
 
+      setInfo(playlist)
+
       // await setData({
       //   color: 'yellow-500',
       //   text: 'Adquirindo informações dos vídeos'
@@ -101,6 +103,8 @@ export default function Home() {
         </div>
 
       </section>
+
+      {info && console.log(info)}
 
     </main>
     
