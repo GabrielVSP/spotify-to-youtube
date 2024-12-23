@@ -39,6 +39,8 @@ export default function Home() {
 
       setInfo(playlist)
 
+      return
+
       // await setData({
       //   color: 'yellow-500',
       //   text: 'Adquirindo informações dos vídeos'

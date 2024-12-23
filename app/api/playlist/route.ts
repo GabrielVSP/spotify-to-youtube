@@ -18,6 +18,8 @@ export async function POST() {
 
         const newAcc = (await oauth2Client.getAccessToken()).token
 
+        return NextResponse.json(newAcc)
+
         const playlist = await axios.post("https://www.googleapis.com/youtube/v3/playlists?part=id,snippet,status", {
             "snippet": {
                 "title": v4(),
@@ -35,7 +37,7 @@ export async function POST() {
 
     } catch(e: any) {
 
-        return new NextResponse(e.response, { status: 500 })
+        return new NextResponse(e, { status: 500 })
 
     }
     
