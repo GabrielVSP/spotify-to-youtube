@@ -42,9 +42,10 @@ export default function Home() {
         text: 'Adquirindo informações dos vídeos'
       })
 
-      const jsonString = JSON.stringify(albumData)
-      const base64 = Buffer.from(jsonString).toString('base64')
-      const videosid = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/video?data=`+base64)
+      const jsonString = await JSON.stringify(albumData)
+      const base64 = await Buffer.from(jsonString).toString('base64')
+
+      const videosid = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/video?data=${base64}`)
 
       const videosInsert: { playlistUrl: string } = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/video`, {
         playlistId: playlist.data.id,
