@@ -35,7 +35,7 @@ export async function POST() {
 
     } catch(e: any) {
 
-        return new NextResponse(e, { status: 500 })
+        return new NextResponse(e.response, { status: 500 })
 
     }
     
