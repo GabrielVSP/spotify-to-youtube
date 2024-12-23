@@ -25,17 +25,17 @@ export default function Home() {
 
       await setData({
         color: 'yellow-500',
-        text: 'Adquirindo informações do álbum...'
+        text: `Adquirindo informações do álbum...`
       })
 
-      const albumData = await axios.get(`${process.env.APP_URL}api/album/${url}`)
+      const albumData = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/album/${url}`)
 
       await setData({
         color: 'yellow-500',
         text: 'Criando playlist...'
       })
 
-      const playlist: { data: {id: string}} = await axios.post(`${process.env.APP_URL}api/playlist`)
+      const playlist: { data: {id: string}} = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/playlist`)
 
       await setData({
         color: 'yellow-500',
@@ -44,9 +44,9 @@ export default function Home() {
 
       const jsonString = JSON.stringify(albumData)
       const base64 = Buffer.from(jsonString).toString('base64')
-      const videosid = await axios.get(`${process.env.APP_URL}api/video?data=`+base64)
+      const videosid = await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/video?data=`+base64)
 
-      const videosInsert: { playlistUrl: string } = await axios.post(`${process.env.APP_URL}api/video`, {
+      const videosInsert: { playlistUrl: string } = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}api/video`, {
         playlistId: playlist.data.id,
         songsId: videosid
       })

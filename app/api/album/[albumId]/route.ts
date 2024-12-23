@@ -22,7 +22,7 @@ export async function GET ( req: Request, { params }: { params: Promise<{ albumI
 
         if(!token) {
 
-            await axios.get(`${process.env.APP_URL}api/token`, {
+            await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/token`, {
                 headers: {
                     "Authorization": tokenKey
                 }
@@ -55,7 +55,7 @@ export async function GET ( req: Request, { params }: { params: Promise<{ albumI
             })
 
         } catch(e: any) {
-            await axios.get(`${process.env.APP_URL}api/token`, {
+            await axios.get(`${process.env.NEXT_PUBLIC_APP_URL}api/token`, {
                 headers: {
                     "Authorization": tokenKey
                 }

@@ -4,7 +4,7 @@ import prismadb from "./prismadb";
 export const oauth2Client = new google.auth.OAuth2(
     process.env.YT_CLIENT_ID,
     process.env.YT_CLIENT_SECRET,
-    `${process.env.APP_URL}api/callback`
+    `${process.env.NEXT_PUBLIC_APP_URL}api/callback`
 );
 
 export const authUrl = oauth2Client.generateAuthUrl({
