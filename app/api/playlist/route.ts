@@ -37,11 +37,11 @@ export async function POST() {
             headers: { "Authorization": `Bearer ${newAcc}`}
         }))
 
-        return NextResponse.json(req)
+        return NextResponse.json(req.data)
 
     } catch {
 
-        return new NextResponse('Erro interno', { status: 500 })
+        return new NextResponse("Erro interno", { status: 500 })
 
     }
     
