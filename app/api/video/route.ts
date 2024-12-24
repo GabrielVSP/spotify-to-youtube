@@ -2,8 +2,8 @@ import { oauth2Client } from "@/lib/oauth2";
 import prismadb from "@/lib/prismadb";
 import axios from "axios";
 import { NextResponse } from "next/server";
-import puppeteer from "puppeteer";
 import { chromium } from 'playwright-chromium';
+import puppeteer from "puppeteer"
 import * as playwrightLambda from 'playwright-aws-lambda';
 import * as path from 'path';
 
@@ -30,9 +30,9 @@ export async function GET( req: Request ) {
         //       headless: true,
         // })
 
-        const executablePath = path.join(__dirname, 'chromium', 'chrome-linux', 'chrome')
+        const executablePath = path.resolve(process.cwd()+"/chromium/chr.exe")
 
-        const browser = await chromium.launch({
+        const browser = await puppeteer.launch({
             executablePath,
             headless: true,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
