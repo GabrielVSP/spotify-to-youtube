@@ -4,6 +4,7 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import { chromium } from "playwright";
+import chromiumLambda from 'chrome-aws-lambda';
 
 export async function GET( req: Request ) {
     
@@ -29,17 +30,9 @@ export async function GET( req: Request ) {
         // })
 
         const browser = await chromium.launch({
-            args: [
-              "--no-sandbox",
-              "--disable-setuid-sandbox",
-              "--disable-dev-shm-usage",
-              "--disable-accelerated-2d-canvas",
-              "--no-first-run",
-              "--headless",
-              "--disable-gpu",
-              "--disable-translate",
-            ],
-            headless: true,
+            executablePath: await chromiumLambda.executablePath,
+            args: chromiumLambda.args,
+            headless: chromiumLambda.headless,
           });
         
         const jsonString = Buffer.from(dataQuery, 'base64').toString('utf-8')
