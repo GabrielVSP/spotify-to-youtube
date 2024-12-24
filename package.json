@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate",
-    "install": "apt-get install -y libnss3 libatk1.0-0 libx11-xcb1 libcups2 libxcomposite1 libxrandr2 libpangocairo-1.0-0 libxdamage1 libxfixes3 libdrm2 libgbm1 libasound2"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
