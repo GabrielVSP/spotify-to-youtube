@@ -4,7 +4,6 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import { chromium } from "playwright";
-import chromiumLambda from 'chrome-aws-lambda';
 
 export async function GET( req: Request ) {
     
@@ -29,47 +28,47 @@ export async function GET( req: Request ) {
         //       headless: true,
         // })
 
-        const browser = await chromium.launch({
-            executablePath: await chromiumLambda.executablePath,
-            args: chromiumLambda.args,
-            headless: chromiumLambda.headless,
-          });
+        // const browser = await chromium.launch({
+        //     executablePath: await chromiumLambda.executablePath,
+        //     args: chromiumLambda.args,
+        //     headless: chromiumLambda.headless,
+        //   });
         
-        const jsonString = Buffer.from(dataQuery, 'base64').toString('utf-8')
-        const albumData = JSON.parse(jsonString)
+        // const jsonString = Buffer.from(dataQuery, 'base64').toString('utf-8')
+        // const albumData = JSON.parse(jsonString)
 
-        const ids: any[] = []
+        // const ids: any[] = []
         
-        for( const song of albumData.data.songsName) {
+        // for( const song of albumData.data.songsName) {
 
-            const page = await browser.newPage()
+        //     const page = await browser.newPage()
             
-            const searchQuery = `${albumData.data.artist} ${song}`;
-            const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
+        //     const searchQuery = `${albumData.data.artist} ${song}`;
+        //     const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
       
-            // Navega até a página de resultados
-            await page.goto(searchUrl, { waitUntil: 'domcontentloaded' });
-            await page.waitForSelector('ytd-video-renderer');
+        //     // Navega até a página de resultados
+        //     await page.goto(searchUrl, { waitUntil: 'domcontentloaded' });
+        //     await page.waitForSelector('ytd-video-renderer');
       
-            // Coleta a URL do vídeo com maior relevância
-            const videoUrl = await page.evaluate(() => {
-              const videoElement = document.querySelector('ytd-video-renderer a#video-title');
-              return videoElement ? (videoElement as HTMLAnchorElement).href : null;
-            });
+        //     // Coleta a URL do vídeo com maior relevância
+        //     const videoUrl = await page.evaluate(() => {
+        //       const videoElement = document.querySelector('ytd-video-renderer a#video-title');
+        //       return videoElement ? (videoElement as HTMLAnchorElement).href : null;
+        //     });
 
-          if(!videoUrl) return new NextResponse("Nenhum vídeo encontrado")
+        //   if(!videoUrl) return new NextResponse("Nenhum vídeo encontrado")
            
-            const videoQuery = new URL(videoUrl)
+        //     const videoQuery = new URL(videoUrl)
 
-          ids.push(videoQuery.searchParams.get('v'))
+        //   ids.push(videoQuery.searchParams.get('v'))
 
-          page.close()
+        //   page.close()
 
-        }
+        // }
 
-        await browser.close()
+        // await browser.close()
 
-        return NextResponse.json(ids)
+        // return NextResponse.json(ids)
 
     } catch(e: any) {
 
