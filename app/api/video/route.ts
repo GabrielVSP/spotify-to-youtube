@@ -4,6 +4,8 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import { chromium } from 'playwright-chromium';
+import * as playwrightLambda from 'playwright-aws-lambda';
+import * as path from 'path';
 
 export async function GET( req: Request ) {
     
@@ -28,7 +30,10 @@ export async function GET( req: Request ) {
         //       headless: true,
         // })
 
+        const executablePath = path.join(__dirname, 'chromium', 'chrome-linux', 'chrome')
+
         const browser = await chromium.launch({
+            executablePath,
             headless: true,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
