@@ -13,7 +13,19 @@ export async function GET( req: Request ) {
 
         if(!dataQuery) return new NextResponse('Nenhum dado foi identificado na query', { status: 400})
 
-        const browser = await puppeteer.launch()
+        const browser = await puppeteer.launch({
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--no-first-run',
+                '--headless',
+                '--disable-gpu',
+                '--disable-translate',
+              ],
+              headless: true,
+        })
         
         const jsonString = Buffer.from(dataQuery, 'base64').toString('utf-8')
         const albumData = JSON.parse(jsonString)
