@@ -1,8 +1,0 @@
-<assembly
-  xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>
-  <assemblyIdentity
-      name='115.0.5322.119'
-      version='115.0.5322.119'
-      type='win32'/>
-  <file name='opera_elf.dll'/>
-</assembly>
