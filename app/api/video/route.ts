@@ -3,7 +3,7 @@ import prismadb from "@/lib/prismadb";
 import axios from "axios";
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
-import chromium from "puppeteer-core";
+import { chromium } from 'playwright-chromium';
 
 export async function GET( req: Request ) {
     
@@ -28,7 +28,10 @@ export async function GET( req: Request ) {
         //       headless: true,
         // })
 
-        const browser = await chromium.launch();
+        const browser = await chromium.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        });
         
         const jsonString = Buffer.from(dataQuery, 'base64').toString('utf-8')
         const albumData = JSON.parse(jsonString)
