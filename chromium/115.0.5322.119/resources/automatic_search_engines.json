@@ -1,0 +1,31 @@
+// ZtPMo8xDsbWJZILs9caSS58+1y78u/Q9gs9oW/WduaHOI7TixLchZ27GapPvRcrtMkHnkk4CdQek54Tsaj+kwUQKLEtgxR8PUfnKhqXuiLNxc0j+4xGzoB0nt+2fQDgRKYV2+o8D2uVuIaBSyCvsG663H3XUKcyXYEs7K10tEs+3pqTvjpYrN+uVDSiPp5B3EThc9crgRFyKW4lPzogZaJdbLwZ+sT+DaSpg2m/GPSjl6WqIfQXiM9YPl4IwIBT7noueywK0mbDl9iYKW167d17T1LQNyIoi06BYDCgsPGD87wsY6cjrE09JZsUCZHe7Vpjrr6UQ/pOfj5PEDq9f5Q==
+{
+"version": 3,
+"list": [
+    {
+        "url": "https://redir.opera.com/amazon/",
+        "short_name": "Amazon",
+        "color": "FFFF9900"
+    },
+    {
+        "url": "https://github.com",
+        "short_name": "GitHub",
+        "color": "FF000000"
+    },
+    {
+        "url": "https://istockphoto.com",
+        "short_name": "iStockPhoto",
+        "color": "FF000000"
+    },
+    {
+        "url": "https://x.com",
+        "short_name": "X",
+        "color": "FF000000"
+    },
+    {
+        "url": "https://youtube.com",
+        "short_name": "YouTube",
+        "color": "FFFF0000"
+    }
+]
+}

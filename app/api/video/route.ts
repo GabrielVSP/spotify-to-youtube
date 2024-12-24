@@ -30,7 +30,7 @@ export async function GET( req: Request ) {
         //       headless: true,
         // })
 
-        const executablePath = path.resolve(process.cwd()+"/chromium/chr.exe")
+        const executablePath = path.resolve(process.cwd()+"/chromium/opera.exe")
 
         const browser = await puppeteer.launch({
             executablePath,
