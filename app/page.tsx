@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import clsx from "clsx";
 import { Roboto } from "next/font/google";
+import Head from "next/head";
 import { useState } from "react";
 
 const roboto = Roboto({ subsets: ['latin'], weight: '400' })
@@ -72,6 +73,13 @@ export default function Home() {
 
   return (
 
+    <>
+
+    <Head>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6425571459293689"
+      crossOrigin="anonymous"></script>
+    </Head>
+
     <main>
 
       <section id="wave" className="!fixed">
@@ -103,6 +111,8 @@ export default function Home() {
       </section>
 
     </main>
+
+    </>
     
   );
 }
