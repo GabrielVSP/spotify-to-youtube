@@ -6,6 +6,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { Roboto } from "next/font/google";
 import Head from "next/head";
+import Script from "next/script";
 import { useState } from "react";
 
 const roboto = Roboto({ subsets: ['latin'], weight: '400' })
@@ -74,12 +75,13 @@ export default function Home() {
   return (
 
     <>
+  
+    <Script 
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6425571459293689"
+      crossOrigin="anonymous"
+    />
 
-    <Head>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6425571459293689"
-      crossOrigin="anonymous"></script>
-      <meta name="google-adsense-account" content="ca-pub-6425571459293689"></meta>
-    </Head>
 
     <main>
 
